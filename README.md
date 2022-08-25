@@ -2,7 +2,7 @@
 
 This repository includes a single class file, responsible for managing a url string and it's component parts.
 
-There are 5 steps to this test, please save your code for each step so we can see how the code progresses through the test.
+There are 5 steps to this test:
 
 1. Using a regex to parse a URL is very flawed, can you refactor the class to parse a URL without using regex?
 2. Can you create functionality that can switch the URL scheme from HTTP to HTTPS and vice versa.
