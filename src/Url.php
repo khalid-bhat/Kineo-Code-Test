@@ -6,21 +6,90 @@ final class Url
     public function __construct(string $url)
     {
         $this->url = $url;
-        $matches = [];
-        preg_match('~^(https?)://([^/]*)([^?]*)?\??([^#]*)?#(.*)?$~', $this->url, $matches);
-        array_shift($matches);
-        $this->parts = array_values($matches);
+
+        // use parse_url instead of a regex 
+        $this->parts = parse_url($this->url);      
     }
     public function getScheme(): string
     {
-        return $this->parts[0];
+        return $this->parts['scheme'];
     }
+    
     public function getHost(): string
     {
-        return $this->parts[1];
+        return $this->parts['host'];
     }
+    
     public function getPath(): string
     {
-        return $this->parts[2];
+        return $this->parts['path'] ?? '';
     }
+    // function to get the query parameter string (e.g. "id=1&name=abc") of the URL
+    public function getQuery(): string
+    {
+        return $this->parts['query'] ?? '';
+    }
+
+    // function that changes scheme of URL e.g https to http or vice versa
+    public function switchUrlScheme(string $scheme): Url  
+    {
+        $this->parts['scheme'] = $scheme;
+        return $this;
+    }
+
+    // function that adds a query param to the URL and return the modified Url object
+    public function addQueryParam(string $key, string $value): Url  
+    {
+        // Parse the existing query string into an associative array
+        parse_str($this->getQuery(), $queryParams);     
+        // Update the array with the new query parameter.         
+        $queryParams[$key] = $value;                              
+        $this->parts['query'] = http_build_query($queryParams);
+        return $this;
+    }
+
+    // function that removes a query param to the URL and return the modified Url object
+    public function removeQueryParam(string $key): Url        
+    {
+        parse_str($this->getQuery(), $queryParams);  
+        // Remove the provided query parameter from the array          
+        unset($queryParams[$key]);                            
+        $this->parts['query'] = http_build_query($queryParams);
+        return $this;
+    }
+
+    //get the modified url using this function
+    public function getModifiedUrl(): string               
+    {
+        $url = $this->getScheme() . '://' . $this->getHost();
+        if (!empty($this->getPath())) {
+            $url .= $this->getPath();
+        }
+        if (!empty($this->getQuery())) {
+            $url .= '?' . $this->getQuery();
+        }
+        return $url;
+    }
+    
+    //check url is same including query params
+    public function isUrlSame(Url $otherUrl): bool              
+    {
+        return $this->url === $otherUrl->url;
+    }
+
+    //check url is same excluding query paramas
+    public function isUrlSameIgnoringQueryParams(Url $otherUrl): bool       
+    {
+         
+    $thisParts = $this->parts;
+    unset($thisParts['query']);
+    $thisUrl = $thisParts['scheme'] . '://' . rtrim($thisParts['host'] . $thisParts['path'], '/');
+    
+    $otherParts = $otherUrl->parts;
+    unset($otherParts['query']);
+    $otherUrl = $otherParts['scheme'] . '://' . rtrim($otherParts['host'] . $otherParts['path'], '/');
+    
+    return $thisUrl === $otherUrl;
+    }
+
 }
