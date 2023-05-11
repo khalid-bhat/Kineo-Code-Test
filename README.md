@@ -17,21 +17,19 @@ Solutions :
 1. Refer to Url.php Line : 9
    
 2. change the URL scheme 
+
+
      //test code 
-
-
      $url = new Url('http://khalid.com');
      $modifiedUrl = $url->switchUrlScheme('https');
      echo $modifiedUrl; // Output: https://khalid.com
      
 3. to add query params
-    //test code 
-
+    
 
      $url = new Url('http://example.com/?foo=bar&baz=qux');
      $modifiedUrl = $url->addQueryParam('abc', '123');
-     echo $modifiedUrl; // Output: http://khalid.com/?foo=bar&baz=qux&abc=123
-     
+     echo $modifiedUrl; // Output: http://khalid.com/?foo=bar&baz=qux&abc=123 
     //to remove query params
      $modifiedUrl = $newUrl->removeQueryParam('foo');
      echo $modifiedUrl; // Output: http://khalid.com/?baz=qux&abc=123
