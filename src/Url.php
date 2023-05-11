@@ -48,7 +48,7 @@ final class Url
         return $this;
     }
 
-    // function that removes a query param to the URL and return the modified Url object
+    // function that removes a query param from the URL and return the modified Url object
     public function removeQueryParam(string $key): Url        
     {
         parse_str($this->getQuery(), $queryParams);  
