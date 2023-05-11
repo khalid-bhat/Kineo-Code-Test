@@ -20,7 +20,8 @@ Solutions :
 
 
 
-     ``` $url = new Url('http://khalid.com');
+     ``` 
+     $url = new Url('http://khalid.com');
      $modifiedUrl = $url->switchUrlScheme('https');
      echo $modifiedUrl; // Output: https://khalid.com 
      
