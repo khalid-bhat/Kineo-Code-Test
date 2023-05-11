@@ -22,11 +22,11 @@ Solutions :
 
      ``` $url = new Url('http://khalid.com');
      $modifiedUrl = $url->switchUrlScheme('https');
-     echo $modifiedUrl; // Output: https://khalid.com ```
+     echo $modifiedUrl; // Output: https://khalid.com ]
      
-3. to add query params
+3. Can you create functionality that can add and remove query parameters.
     
-
+    //to add query params
      ``` $url = new Url('http://example.com/?foo=bar&baz=qux');
      $modifiedUrl = $url->addQueryParam('abc', '123');
      echo $modifiedUrl; // Output: http://khalid.com/?foo=bar&baz=qux&abc=123 
