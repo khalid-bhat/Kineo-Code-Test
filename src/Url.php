@@ -79,10 +79,6 @@ final class Url
     //check url is same including query params
     public function isUrlSame(Url $otherUrl): bool              
     {
-        // trim the right trailing slash from both URLs
-        $this->url = rtrim($this->url, '/');
-        $otherUrl->url = rtrim($otherUrl->url, '/');
-
        // sort the query params so that order of params doesn't matter
         $thisParams = $this->sortQueryParams();
         $otherParams = $otherUrl->sortQueryParams();
@@ -97,6 +93,7 @@ final class Url
          
     $thisParts = $this->parts;
     unset($thisParts['query']);
+    // trim the right trailing slash from both URLs
     $thisUrl = $thisParts['scheme'] . '://' . rtrim($thisParts['host'] . $thisParts['path'], '/');
     
     $otherParts = $otherUrl->parts;
