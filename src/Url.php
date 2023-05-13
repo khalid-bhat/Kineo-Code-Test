@@ -32,8 +32,6 @@ final class Url
             return '';
         }
         parse_str($query,$params);
-        //sort the query params alphabetically so that their order won't matter
-        ksort($params);
         return http_build_query($params);
     }
 
@@ -81,13 +79,16 @@ final class Url
     //check url is same including query params
     public function isUrlSame(Url $otherUrl): bool              
     {
-        //trim the trailing slash from right side 
-        $this->url = rtrim($this->url,'/');
-        $otherUrl->url = rtrim($otherUrl->url,'/');
-       //use the get query function  used inside the getUrl function to return the query params in ksort
-        $this->url = $this->getUrl();
-        $otherUrl->url = $otherUrl->getUrl();
-        return $this->url === $otherUrl->url;
+        // trim the right trailing slash from both URLs
+        $this->url = rtrim($this->url, '/');
+        $otherUrl->url = rtrim($otherUrl->url, '/');
+
+       // sort the query params so that order of params doesn't matter
+        $thisParams = $this->sortQueryParams();
+        $otherParams = $otherUrl->sortQueryParams();
+      
+        // separately compare if the urls are same while using isUrlSameIgnoringQueryParams() and also check if sorted query param string is same
+        return ( $this->isUrlSameIgnoringQueryParams($otherUrl)) && ($thisParams === $otherParams);
     }
 
     //check url is same excluding query paramas
@@ -104,5 +105,13 @@ final class Url
     
     return $thisUrl === $otherUrl;
     }
-
+    // getQueryParams in alphabetical order
+    public function sortQueryParams(): string
+    {
+        $query = $this->getQuery();
+        parse_str($query,$params);
+        //sort the query params alphabetically so that their order won't matter
+        ksort($params);
+        return http_build_query($params);
+    }
 }
