@@ -27,7 +27,14 @@ final class Url
     // function to get the query parameter string (e.g. "id=1&name=abc") of the URL
     public function getQuery(): string
     {
-        return $this->parts['query'] ?? '';
+        $query = $this->parts['query'] ?? '';
+        if (!is_string($query)) {
+            return '';
+        }
+        parse_str($query,$params);
+        //sort the query params alphabetically so that their order won't matter
+        ksort($params);
+        return http_build_query($params);
     }
 
     // function that changes scheme of URL e.g https to http or vice versa
@@ -74,6 +81,12 @@ final class Url
     //check url is same including query params
     public function isUrlSame(Url $otherUrl): bool              
     {
+        //trim the trailing slash from right side 
+        $this->url = rtrim($this->url,'/');
+        $otherUrl->url = rtrim($otherUrl->url,'/');
+       //use the get query function  used inside the getUrl function to return the query params in ksort
+        $this->url = $this->getUrl();
+        $otherUrl->url = $otherUrl->getUrl();
         return $this->url === $otherUrl->url;
     }
 

@@ -34,7 +34,7 @@ Solutions :
      echo $modifiedUrl; // Output: http://khalid.com/?foo=bar&baz=qux&abc=123 
     //to remove query params
      $modifiedUrl = $newUrl->removeQueryParam('foo');
-     echo $modifiedUrl; // Output: http://khalid.com/?baz=qux&abc=123 ```
+     echo $modifiedUrl; // Output: http://khalid.com/?baz=qux&abc=123 
      
      
 4. Can you create functionality to return the URL with any changes made through the     previously added functionality.
