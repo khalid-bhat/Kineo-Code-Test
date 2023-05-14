@@ -23,7 +23,7 @@ Solutions :
      ``` 
      $url = new Url('http://khalid.com');
      $modifiedUrl = $url->switchUrlScheme('https');
-     echo $modifiedUrl; // Output: https://khalid.com 
+     echo $modifiedUrl->getModifiedUrl(); // Output: https://khalid.com 
      
 3. Can you create functionality that can add and remove query parameters.
     
@@ -31,10 +31,10 @@ Solutions :
     ```//to add query params
       $url = new Url('http://example.com/?foo=bar&baz=qux');
      $modifiedUrl = $url->addQueryParam('abc', '123');
-     echo $modifiedUrl; // Output: http://khalid.com/?foo=bar&baz=qux&abc=123 
+     echo $modifiedUrl->getModifiedUrl(); // Output: http://khalid.com/?foo=bar&baz=qux&abc=123 
     //to remove query params
      $modifiedUrl = $newUrl->removeQueryParam('foo');
-     echo $modifiedUrl; // Output: http://khalid.com/?baz=qux&abc=123 
+     echo  $modifiedUrl->getModifiedUrl(); // Output: http://khalid.com/?baz=qux&abc=123 
      
      
 4. Can you create functionality to return the URL with any changes made through the     previously added functionality.

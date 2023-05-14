@@ -39,6 +39,8 @@ final class Url
     // function that changes scheme of URL e.g https to http or vice versa
     public function switchUrlScheme(string $scheme): Url  
     {
+        //change input to lowercase so that Https and https is same
+        $scheme =  strtolower($scheme);
         // handle if user passes other value than the valid schemes
         if (!in_array($scheme, Url::VALID_SCHEMES)) {
             throw new InvalidArgumentException('Invalid URL scheme.');
