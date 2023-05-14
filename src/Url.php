@@ -3,6 +3,7 @@ final class Url
 {
     private array $parts;
     private string $url;
+    const VALID_SCHEMES = ['http', 'https'];
     public function __construct(string $url)
     {
         $this->url = $url;
@@ -38,6 +39,10 @@ final class Url
     // function that changes scheme of URL e.g https to http or vice versa
     public function switchUrlScheme(string $scheme): Url  
     {
+        // handle if user passes other value than the valid schemes
+        if (!in_array($scheme, Url::VALID_SCHEMES)) {
+            throw new Exception('Invalid URL scheme.');
+          }
         $this->parts['scheme'] = $scheme;
         return $this;
     }
@@ -76,8 +81,17 @@ final class Url
         return $url;
     }
     
+    public function isUrlSame(Url $otherUrl, bool $ignoreQueryParams = true): bool 
+    {
+        if ($ignoreQueryParams) {
+          return $this->isUrlSameIgnoringQueryParams($otherUrl);
+        } else {
+          return $this->isUrlSameWithQueryParams($otherUrl);
+        }
+    }
+
     //check url is same including query params
-    public function isUrlSame(Url $otherUrl): bool              
+    private function isUrlSameWithQueryParams(Url $otherUrl): bool              
     {
        // sort the query params so that order of params doesn't matter
         $thisParams = $this->sortQueryParams();
@@ -88,22 +102,21 @@ final class Url
     }
 
     //check url is same excluding query paramas
-    public function isUrlSameIgnoringQueryParams(Url $otherUrl): bool       
-    {
-         
-    $thisParts = $this->parts;
-    unset($thisParts['query']);
-    // trim the right trailing slash from both URLs
-    $thisUrl = $thisParts['scheme'] . '://' . rtrim($thisParts['host'] . $thisParts['path'], '/');
-    
-    $otherParts = $otherUrl->parts;
-    unset($otherParts['query']);
-    $otherUrl = $otherParts['scheme'] . '://' . rtrim($otherParts['host'] . $otherParts['path'], '/');
-    
-    return $thisUrl === $otherUrl;
+    private function isUrlSameIgnoringQueryParams(Url $otherUrl): bool       
+    {  
+        $thisParts = $this->parts;
+        unset($thisParts['query']);
+        // trim the right trailing slash from both URLs
+        $thisUrl = $thisParts['scheme'] . '://' . rtrim($thisParts['host'] . $thisParts['path'], '/');
+        
+        $otherParts = $otherUrl->parts;
+        unset($otherParts['query']);
+        $otherUrl = $otherParts['scheme'] . '://' . rtrim($otherParts['host'] . $otherParts['path'], '/');
+        
+        return $thisUrl === $otherUrl;
     }
     // getQueryParams in alphabetical order
-    public function sortQueryParams(): string
+    private function sortQueryParams(): string
     {
         $query = $this->getQuery();
         parse_str($query,$params);

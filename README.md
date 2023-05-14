@@ -52,11 +52,13 @@ Solutions :
         $url3 = new Url('http://khalid.com/?foo=bar');
         $url4 = new Url('http://khalid.com/?baz=qux');
         
-        // check if $url1 and $url2 are the same URL
-        echo $url1->isUrlSame($url2) ;
-        
-        // check if $url1 and $url3 are the same URL ignoring query params
-        echo $url1->isUrlSameIgnoringQueryParams($url3);
-        
+        // Compare URLs ignoring query parameters
+        echo $url1->isUrlSame($url3); // Output: true
+
         // check if $url3 and $url4 are the same URL ignoring query params
-        echo $url3->isUrlSameIgnoringQueryParams($url4) ;
+        echo $url3->isUrlSame($url4) ; // Output: true
+
+        // Compare URLs with query parameters
+        echo $url3->isUrlSame($url4, false); // Output: false
+
+     
