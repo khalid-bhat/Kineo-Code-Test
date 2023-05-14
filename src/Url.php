@@ -41,7 +41,7 @@ final class Url
     {
         // handle if user passes other value than the valid schemes
         if (!in_array($scheme, Url::VALID_SCHEMES)) {
-            throw new Exception('Invalid URL scheme.');
+            throw new InvalidArgumentException('Invalid URL scheme.');
           }
         $this->parts['scheme'] = $scheme;
         return $this;
